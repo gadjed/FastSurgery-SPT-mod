@@ -1,25 +1,40 @@
 # Fast Surgery
 
-SPT **4.0.13 Compatible** server mod that sets medical use time to **5 seconds** for surgical / fracture items.
+**SPT 4.0.13 Compatible**
+
+Server mod that sets medical use time to **5 seconds** for splints and surgical kits.
 
 Developed and tested against **SPT 4.0.13**.
 
+[Latest release](https://github.com/gadjed/FastSurgery-SPT-mod/releases/latest) · [License: MIT](LICENSE)
+
+## Features
+
+- Configurable use time for surgical / fracture items (default **5s**)
+- Human-readable `config.json` keys (item names, not template IDs)
+- Optional Continuous Healing companion for healing all limbs in one go
+
 ## Affected items
 
-| Item | Template ID |
-|------|-------------|
-| Immobilizing splint | `544fb3364bdc2d34748b456a` |
-| Aluminum splint | `5af0454c86f7746bf20992e8` |
-| CMS surgical kit | `5d02778e86f774203e7dedbe` |
-| Surv12 field surgical kit | `5d02797c86f774203f38e30a` |
+| Config key | Template ID |
+|------------|-------------|
+| `Immobilizing splint` | `544fb3364bdc2d34748b456a` |
+| `Aluminum splint` | `5af0454c86f7746bf20992e8` |
+| `CMS surgical kit` | `5d02778e86f774203e7dedbe` |
+| `Surv12 field surgical kit` | `5d02797c86f774203f38e30a` |
 
 ## Install
 
-1. Download the latest release zip from [Releases](https://github.com/gadjed/FastSurgery-SPT-mod/releases)
+1. Download `FastSurgery-*.zip` from [Releases](https://github.com/gadjed/FastSurgery-SPT-mod/releases)
 2. Extract into `<SPT>/user/mods/`
 3. Restart the SPT server
 
-You should see `[FastSurgery]` lines in the server log on startup.
+On startup the server log should show lines like:
+
+```text
+[FastSurgery] CMS surgical kit: medUseTime 16 -> 5s
+[FastSurgery] Updated use time on 4 medical item(s).
+```
 
 ## Config
 
@@ -29,28 +44,35 @@ Edit `user/mods/FastSurgery/config.json`:
 {
   "UseTimeSeconds": 5,
   "Items": {
-    "544fb3364bdc2d34748b456a": true,
-    "5af0454c86f7746bf20992e8": true,
-    "5d02778e86f774203e7dedbe": true,
-    "5d02797c86f774203f38e30a": true
+    "Immobilizing splint": true,
+    "Aluminum splint": true,
+    "CMS surgical kit": true,
+    "Surv12 field surgical kit": true
   }
 }
 ```
 
-- `UseTimeSeconds` — use time in seconds (default `5`)
-- `Items` — enable (`true`) / disable (`false`) each template ID
+| Key | Description |
+|-----|-------------|
+| `UseTimeSeconds` | Use time in seconds (default `5`) |
+| `Items` | Enable (`true`) / disable (`false`) each item by name |
+
+Notes:
+- Names are resolved through an internal catalog (`ItemCatalog`)
+- Matching is **case-insensitive**
+- Raw template IDs still work as keys if you prefer them
 
 ## Recommended companion
 
 Pair with [Continuous Healing](https://forge.sp-tarkov.com/mod/1884/continuous-healing) (client mod) so CMS / Surv12 / splints continue across all limbs.
 
-In Continuous Healing F12 settings:
+In Continuous Healing **F12** settings:
 - **Heal Limbs** = `true`
 - **Heal Delay** = `0`
 
 ## Build from source
 
-Requires .NET 9 SDK.
+Requires **.NET 9** SDK.
 
 ```bash
 dotnet build FastSurgery.csproj -c Release
