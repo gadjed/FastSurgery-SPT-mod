@@ -26,8 +26,15 @@ Developed and tested against **SPT 4.0.13**.
 ## Install
 
 1. Download `FastSurgery-*.zip` from [Releases](https://github.com/gadjed/FastSurgery-SPT-mod/releases)
-2. Extract into `<SPT>/user/mods/`
+2. Extract the archive into your **SPT game root** (the folder that contains `SPT.Server.exe` / `user/`)
 3. Restart the SPT server
+
+The zip already contains the correct paths:
+
+```text
+user/mods/FastSurgery/FastSurgery.dll
+user/mods/FastSurgery/config.json
+```
 
 On startup the server log should show lines like:
 
