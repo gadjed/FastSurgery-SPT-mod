@@ -13,7 +13,7 @@ namespace FastSurgery;
 
 public record ModMetadata : AbstractModMetadata
 {
-    public override string ModGuid { get; init; } = "alex.fastsurgery";
+    public override string ModGuid { get; init; } = "gadjed.fastsurgery";
     public override string Name { get; init; } = "Fast Surgery";
     public override string Author { get; init; } = "gadjed";
     public override List<string>? Contributors { get; init; } = null;
