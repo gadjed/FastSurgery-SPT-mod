@@ -1,10 +1,10 @@
 # Fast Surgery
 
-**SPT 4.0.13 Compatible**
+**SPT 4.1.0 Compatible**
 
 Server mod that sets medical use time to **5 seconds** for splints and surgical kits.
 
-Developed and tested against **SPT 4.0.13**.
+Developed and tested against **SPT 4.1.0**.
 
 [Latest release](https://github.com/gadjed/FastSurgery-SPT-mod/releases/latest) · [License: MIT](LICENSE)
 
