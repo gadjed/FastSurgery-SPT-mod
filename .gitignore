@@ -1,5 +1,7 @@
-/.vs
-/.idea
-/Build
-/bin
-/obj
+.vs/
+.idea/
+Build/
+bin/
+obj/
+**/bin/
+**/obj/

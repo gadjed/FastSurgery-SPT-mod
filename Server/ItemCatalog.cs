@@ -1,4 +1,4 @@
-namespace FastSurgery;
+namespace MedRebalance;
 
 /// <summary>
 /// Maps friendly config keys to Tarkov item template IDs.

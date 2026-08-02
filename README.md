@@ -1,20 +1,24 @@
-# Fast Surgery
+# Med Rebalance
 
-**SPT 4.1.0 Compatible**
+**Ребаланс медицини** · **SPT 4.0.13** · **v1.3.0** · Server + Client
 
-Server mod that sets medical use time to **5 seconds** for splints and surgical kits.
+Medicine rebalance: faster surgery/splints, continuous multi-limb healing, scratch top-ups from medkit resource, and interrupt-on-damage.
 
-Developed and tested against **SPT 4.1.0**.
+Developed and tested against **SPT 4.0.13**.
 
-[Latest release](https://github.com/gadjed/FastSurgery-SPT-mod/releases/latest) · [License: MIT](LICENSE)
+Formerly *Fast Surgery* — remove old `SPT/user/mods/FastSurgery/` and `BepInEx/plugins/FastSurgery.Client.dll` / Continuous Healing before installing.
+
+[Latest release](https://github.com/gadjed/MedRebalance-SPT-mod/releases/latest) · [License: MIT](LICENSE)
 
 ## Features
 
-- Configurable use time for surgical / fracture items (default **5s**)
-- Human-readable `config.json` keys (item names, not template IDs)
-- Optional Continuous Healing companion for healing all limbs in one go
+- **Server:** configurable `MedUseTime` for splints and surgical kits (default **5s**)
+- **Client — continuous healing:** after one limb finishes, healing continues to the next (bleed / fracture treatment still uses vanilla `DoMedEffect`)
+- **Client — scratch heal:** while continuing, other limbs missing only a few HP get **2–3 HP** topped up from the **medkit resource**; empty kit ends healing
+- **Client — cancel on damage:** any HP damage during healing cancels the med use, fast-forwards the put-away, and restores the last weapon
+- Incompatible with standalone Continuous Healing (`com.lacyway.ch`) — remove that plugin
 
-## Affected items
+## Affected items (server)
 
 | Config key | Template ID |
 |------------|-------------|
@@ -25,27 +29,20 @@ Developed and tested against **SPT 4.1.0**.
 
 ## Install
 
-1. Download `FastSurgery-*.zip` from [Releases](https://github.com/gadjed/FastSurgery-SPT-mod/releases)
-2. Extract the archive into your **SPT game root** (the folder that contains `SPT.Server.exe` / `user/`)
-3. Restart the SPT server
-
-The zip already contains the correct paths:
-
-```text
-user/mods/FastSurgery/FastSurgery.dll
-user/mods/FastSurgery/config.json
-```
-
-On startup the server log should show lines like:
+1. Download `MedRebalance-*.zip` from [Releases](https://github.com/gadjed/MedRebalance-SPT-mod/releases)
+2. Extract into your **SPT game root** (folder with `EscapeFromTarkov.exe` / `BepInEx/` / `SPT/`)
+3. Restart the SPT **server** and the **game client**
+4. Remove leftovers if upgrading: `FastSurgery`, `ContinuousHealing`
 
 ```text
-[FastSurgery] CMS surgical kit: medUseTime 16 -> 5s
-[FastSurgery] Updated use time on 4 medical item(s).
+SPT/user/mods/MedRebalance/MedRebalance.dll
+SPT/user/mods/MedRebalance/config.json
+BepInEx/plugins/MedRebalance.Client.dll
 ```
 
 ## Config
 
-Edit `user/mods/FastSurgery/config.json`:
+### Server — `SPT/user/mods/MedRebalance/config.json`
 
 ```json
 {
@@ -59,34 +56,37 @@ Edit `user/mods/FastSurgery/config.json`:
 }
 ```
 
-| Key | Description |
-|-----|-------------|
-| `UseTimeSeconds` | Use time in seconds (default `5`) |
-| `Items` | Enable (`true`) / disable (`false`) each item by name |
+### Client — F12 (BepInEx)
 
-Notes:
-- Names are resolved through an internal catalog (`ItemCatalog`)
-- Matching is **case-insensitive**
-- Raw template IDs still work as keys if you prefer them
-
-## Recommended companion
-
-Pair with [Continuous Healing](https://forge.sp-tarkov.com/mod/1884/continuous-healing) (client mod) so CMS / Surv12 / splints continue across all limbs.
-
-In Continuous Healing **F12** settings:
-- **Heal Limbs** = `true`
-- **Heal Delay** = `0`
+| Section | Key | Default | Notes |
+|---------|-----|---------|-------|
+| Continuous Healing | Enabled | on | Continue across limbs |
+| Continuous Healing | Heal Limbs | on | Include surgery kits / splints |
+| Continuous Healing | Heal Delay | 0 | Seconds between limbs |
+| Continuous Healing | Reset Animations | on | Off = keep starting anim / skip resets |
+| Interrupt | Cancel On Damage | on | Stop heal + restore weapon |
+| Scratch Heal | Enabled | on | Top up scratched limbs |
+| Scratch Heal | Heal Amount | 2.5 | HP per scratched limb per tick |
+| Scratch Heal | Max Missing HP | 8 | Limb counts as scratch if missing ≤ this |
 
 ## Build from source
 
-Requires **.NET 9** SDK.
+Requires **.NET 9** SDK (server) and references under `mods/SAIN/References` + `mods/QuickSearch/References` (client).
 
 ```bash
-dotnet build FastSurgery.csproj -c Release
+dotnet build Server/MedRebalance.csproj -c Release
+dotnet build Client/MedRebalance.Client.csproj -c Release
 ```
 
-Output is copied to `Build/SPT/user/mods/FastSurgery/`.
+Output:
+
+```text
+Build/SPT/user/mods/MedRebalance/
+Build/SPT/BepInEx/plugins/MedRebalance.Client.dll
+```
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+Continuous multi-limb healing behavior was reimplemented for this mod (inspired by the idea of Continuous Healing by Lacyway); do not ship the original Continuous Healing plugin alongside this build.
